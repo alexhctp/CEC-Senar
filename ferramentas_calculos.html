@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Planejamento Agrícola</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Earthy Neutral -->
+    <!-- Application Structure Plan: A single-page dashboard of independent calculator cards. Each card corresponds to a formula from the source document. This structure turns the static reference material into an interactive tool, providing direct utility and easy navigation for the user who wants to perform specific agricultural calculations. -->
+    <!-- Visualization & Content Choices: Report Info: Agricultural formulas. Goal: Provide interactive calculation. Presentation: HTML form inputs and text outputs per formula. Interaction: User inputs data, clicks a button, and receives an immediate calculated result. Justification: This is the most direct and useful way to make the formula-based content interactive and valuable. Standard charts are not applicable as the source material is not a dataset but a set of calculation rules. Library/Method: Vanilla JavaScript for DOM manipulation and calculations. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .calculator-card {
+            background-color: #ffffff;
+            border: 1px solid #e5e7eb;
+            transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+        .calculator-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .result-display {
+            background-color: #f3f4f6;
+            border-left: 4px solid #16a34a; /* green-600 */
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800">
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <header class="text-center mb-8 md:mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-green-800">Calculadora de Planejamento Agrícola</h1>
+            <p class="mt-2 text-lg text-stone-600">Ferramentas interativas para otimizar seu planejamento no campo.</p>
+        </header>
+
+        <main class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
+
+            <!-- Card 1: Densidade de Plantio -->
+            <div class="calculator-card rounded-xl shadow-sm p-6">
+                <h2 class="text-xl font-bold mb-4 text-green-700">Densidade de Plantio</h2>
+                <form id="densidadeForm" class="space-y-4">
+                    <div>
+                        <label for="densidadeArea" class="block text-sm font-medium text-stone-700">Área Total (m²)</label>
+                        <input type="text" inputmode="decimal" id="densidadeArea" class="mt-1 block w-full rounded-md border-stone-300 shadow-sm focus:border-green-500 focus:ring-green-500" placeholder="Ex: 10000">
+                    </div>
+                    <div>
+                        <label for="densidadeEspLinhas" class="block text-sm font-medium text-stone-700">Espaçamento entre Linhas (m)</label>
+                        <input type="text" inputmode="decimal" id="densidadeEspLinhas" class="mt-1 block w-full rounded-md border-stone-300 shadow-sm focus:border-green-500 focus:ring-green-500" placeholder="Ex: 3,5">
+                    </div>
+                    <div>
+                        <label for="densidadeEspPlantas" class="block text-sm font-medium text-stone-700">Espaçamento entre Plantas (m)</label>
+                        <input type="text" inputmode="decimal" id="densidadeEspPlantas" class="mt-1 block w-full rounded-md border-stone-300 shadow-sm focus:border-green-500 focus:ring-green-500" placeholder="Ex: 0,6">
+                    </div>
+                    <button type="submit" class="w-full bg-green-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-700 transition-colors">Calcular</button>
+                </form>
+                <div id="densidadeResult" class="result-display mt-4 p-4 rounded-lg min-h-[50px] flex items-center"></div>
+            </div>
+
+            <!-- Card 2: Metros Lineares -->
+            <div class="calculator-card rounded-xl shadow-sm p-6">
+                <h2 class="text-xl font-bold mb-4 text-green-700">Metros Lineares de Plantio</h2>
+                <form id="metrosLinearesForm" class="space-y-4">
+                    <div>
+                        <label for="metrosArea" class="block text-sm font-medium text-stone-700">Área Total (m²)</label>
+                        <input type="text" inputmode="decimal" id="metrosArea" class="mt-1 block w-full rounded-md border-stone-300 shadow-sm focus:border-green-500 focus:ring-green-500" placeholder="Ex: 10000">
+                    </div>
+                    <div>
+                        <label for="metrosEspLinhas" class="block text-sm font-medium text-stone-700">Espaçamento entre Linhas (m)</label>
+                        <input type="text" inputmode="decimal" id="metrosEspLinhas" class="mt-1 block w-full rounded-md border-stone-300 shadow-sm focus:border-green-500 focus:ring-green-500" placeholder="Ex: 3,5">
+                    </div>
+                    <button type="submit" class="w-full bg-green-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-700 transition-colors">Calcular</button>
+                </form>
+                <div id="metrosLinearesResult" class="result-display mt-4 p-4 rounded-lg min-h-[50px] flex items-center"></div>
+            </div>
+
+            <!-- Card 3: Fita de Gotejamento -->
+            <div class="calculator-card rounded-xl shadow-sm p-6">
+                <h2 class="text-xl font-bold mb-4 text-green-700">Fita de Gotejamento</h2>
+                <form id="fitaGotejamentoForm" class="space-y-4">
+                    <div>
+                        <label for="fitaMetrosLineares" class="block text-sm font-medium text-stone-700">Metros Lineares (m)</label>
+                        <input type="text" inputmode="decimal" id="fitaMetrosLineares" class="mt-1 block w-full rounded-md border-stone-300 shadow-sm focus:border-green-500 focus:ring-green-500" placeholder="Ex: 2857,14">
+                    </div>
+                    <div>
+                        <label for="fitaAcrescimo" class="block text-sm font-medium text-stone-700">Acréscimo para perdas (%)</label>
+                        <input type="text" inputmode="decimal" id="fitaAcrescimo" value="5" class="mt-1 block w-full rounded-md border-stone-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+                    </div>
+                    <button type="submit" class="w-full bg-green-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-700 transition-colors">Calcular</button>
+                </form>
+                <div id="fitaGotejamentoResult" class="result-display mt-4 p-4 rounded-lg min-h-[50px] flex items-center"></div>
+            </div>
+
+            <!-- Card 4: Número de Emissores -->
+            <div class="calculator-card rounded-xl shadow-sm p-6">
+                <h2 class="text-xl font-bold mb-4 text-green-700">Número de Emissores</h2>
+                <form id="emissoresForm" class="space-y-4">
+                    <div>
+                        <label for="emissoresMetrosLineares" class="block text-sm font-medium text-stone-700">Metros Lineares (m)</label>
+                        <input type="text" inputmode="decimal" id="emissoresMetrosLineares" class="mt-1 block w-full rounded-md border-stone-300 shadow-sm focus:border-green-500 focus:ring-green-500" placeholder="Ex: 2857,14">
+                    </div>
+                    <div>
+                        <label for="emissoresEsp" class="block text-sm font-medium text-stone-700">Espaçamento entre Emissores (m)</label>
+                        <input type="text" inputmode="decimal" id="emissoresEsp" class="mt-1 block w-full rounded-md border-stone-300 shadow-sm focus:border-green-500 focus:ring-green-500" placeholder="Ex: 0,5">
+                    </div>
+                    <button type="submit" class="w-full bg-green-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-700 transition-colors">Calcular</button>
+                </form>
+                <div id="emissoresResult" class="result-display mt-4 p-4 rounded-lg min-h-[50px] flex items-center"></div>
+            </div>
+
+            <!-- Card 5: Vazão Total do Sistema -->
+            <div class="calculator-card rounded-xl shadow-sm p-6">
+                <h2 class="text-xl font-bold mb-4 text-green-700">Vazão Total do Sistema</h2>
+                <form id="vazaoForm" class="space-y-4">
+                    <div>
+                        <label for="vazaoNumEmissores" class="block text-sm font-medium text-stone-700">Número Total de Emissores</label>
+                        <input type="text" inputmode="decimal" id="vazaoNumEmissores" class="mt-1 block w-full rounded-md border-stone-300 shadow-sm focus:border-green-500 focus:ring-green-500" placeholder="Ex: 5714">
+                    </div>
+                    <div>
+                        <label for="vazaoPorEmissor" class="block text-sm font-medium text-stone-700">Vazão por Emissor (L/h)</label>
+                        <input type="text" inputmode="decimal" id="vazaoPorEmissor" class="mt-1 block w-full rounded-md border-stone-300 shadow-sm focus:border-green-500 focus:ring-green-500" placeholder="Ex: 1,6">
+                    </div>
+                    <button type="submit" class="w-full bg-green-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-700 transition-colors">Calcular</button>
+                </form>
+                <div id="vazaoResult" class="result-display mt-4 p-4 rounded-lg min-h-[50px] flex items-center"></div>
+            </div>
+
+            <!-- Card 6: Insumo por Planta -->
+            <div class="calculator-card rounded-xl shadow-sm p-6">
+                <h2 class="text-xl font-bold mb-4 text-green-700">Insumo por Planta</h2>
+                <form id="insumoPlantaForm" class="space-y-4">
+                    <div>
+                        <label for="insumoPlantaDose" class="block text-sm font-medium text-stone-700">Dose Total de Insumo</label>
+                        <input type="text" inputmode="decimal" id="insumoPlantaDose" class="mt-1 block w-full rounded-md border-stone-300 shadow-sm focus:border-green-500 focus:ring-green-500" placeholder="Ex: 500">
+                    </div>
+                    <div>
+                        <label for="insumoPlantaUnidade" class="block text-sm font-medium text-stone-700">Unidade da Dose</label>
+                        <select id="insumoPlantaUnidade" class="mt-1 block w-full rounded-md border-stone-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+                            <option value="1000">Quilogramas (Kg)</option>
+                            <option value="1000000">Toneladas (T)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="insumoPlantaNumPlantas" class="block text-sm font-medium text-stone-700">Número Total de Plantas</label>
+                        <input type="text" inputmode="decimal" id="insumoPlantaNumPlantas" class="mt-1 block w-full rounded-md border-stone-300 shadow-sm focus:border-green-500 focus:ring-green-500" placeholder="Ex: 4761">
+                    </div>
+                    <button type="submit" class="w-full bg-green-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-700 transition-colors">Calcular</button>
+                </form>
+                <div id="insumoPlantaResult" class="result-display mt-4 p-4 rounded-lg min-h-[50px] flex items-center"></div>
+            </div>
+
+            <!-- Card 7: Insumo por Metro Linear -->
+            <div class="calculator-card rounded-xl shadow-sm p-6">
+                <h2 class="text-xl font-bold mb-4 text-green-700">Insumo por Metro Linear</h2>
+                <form id="insumoMetroForm" class="space-y-4">
+                    <div>
+                        <label for="insumoMetroDose" class="block text-sm font-medium text-stone-700">Dose Total de Insumo</label>
+                        <input type="text" inputmode="decimal" id="insumoMetroDose" class="mt-1 block w-full rounded-md border-stone-300 shadow-sm focus:border-green-500 focus:ring-green-500" placeholder="Ex: 500">
+                    </div>
+                     <div>
+                        <label for="insumoMetroUnidade" class="block text-sm font-medium text-stone-700">Unidade da Dose</label>
+                        <select id="insumoMetroUnidade" class="mt-1 block w-full rounded-md border-stone-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+                            <option value="1000">Quilogramas (Kg)</option>
+                            <option value="1000000">Toneladas (T)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="insumoMetroMetrosLineares" class="block text-sm font-medium text-stone-700">Metros Lineares Totais (m)</label>
+                        <input type="text" inputmode="decimal" id="insumoMetroMetrosLineares" class="mt-1 block w-full rounded-md border-stone-300 shadow-sm focus:border-green-500 focus:ring-green-500" placeholder="Ex: 2857,14">
+                    </div>
+                    <button type="submit" class="w-full bg-green-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-700 transition-colors">Calcular</button>
+                </form>
+                <div id="insumoMetroResult" class="result-display mt-4 p-4 rounded-lg min-h-[50px] flex items-center"></div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const formatResult = (value, unit) => {
+                if (isNaN(value) || !isFinite(value)) {
+                    return '<span class="text-red-600 font-medium">Por favor, insira valores válidos.</span>';
+                }
+                const formattedValue = value.toLocaleString('pt-BR', { maximumFractionDigits: 2 });
+                return `<span class="text-stone-800"><strong class="text-green-700 font-bold text-lg">${formattedValue}</strong> ${unit}</span>`;
+            };
+
+            const getFloatValue = (id) => {
+                const value = document.getElementById(id).value;
+                return parseFloat(value.replace(',', '.'));
+            };
+
+            document.getElementById('densidadeForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const area = getFloatValue('densidadeArea');
+                const espLinhas = getFloatValue('densidadeEspLinhas');
+                const espPlantas = getFloatValue('densidadeEspPlantas');
+                const result = area / (espLinhas * espPlantas);
+                document.getElementById('densidadeResult').innerHTML = formatResult(result, 'plantas');
+            });
+
+            document.getElementById('metrosLinearesForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const area = getFloatValue('metrosArea');
+                const espLinhas = getFloatValue('metrosEspLinhas');
+                const result = area / espLinhas;
+                document.getElementById('metrosLinearesResult').innerHTML = formatResult(result, 'metros lineares');
+            });
+
+            document.getElementById('fitaGotejamentoForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const metros = getFloatValue('fitaMetrosLineares');
+                const acrescimo = getFloatValue('fitaAcrescimo');
+                const result = metros * (1 + acrescimo / 100);
+                document.getElementById('fitaGotejamentoResult').innerHTML = formatResult(result, 'metros de fita');
+            });
+
+            document.getElementById('emissoresForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const metros = getFloatValue('emissoresMetrosLineares');
+                const esp = getFloatValue('emissoresEsp');
+                const result = metros / esp;
+                document.getElementById('emissoresResult').innerHTML = formatResult(result, 'emissores');
+            });
+
+            document.getElementById('vazaoForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const numEmissores = getFloatValue('vazaoNumEmissores');
+                const vazaoEmissor = getFloatValue('vazaoPorEmissor');
+                const result = numEmissores * vazaoEmissor;
+                document.getElementById('vazaoResult').innerHTML = formatResult(result, 'L/h');
+            });
+
+            document.getElementById('insumoPlantaForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const dose = getFloatValue('insumoPlantaDose');
+                const fator = getFloatValue('insumoPlantaUnidade');
+                const numPlantas = getFloatValue('insumoPlantaNumPlantas');
+                const result = (dose * fator) / numPlantas;
+                document.getElementById('insumoPlantaResult').innerHTML = formatResult(result, 'g/planta');
+            });
+
+            document.getElementById('insumoMetroForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const dose = getFloatValue('insumoMetroDose');
+                const fator = getFloatValue('insumoMetroUnidade');
+                const metros = getFloatValue('insumoMetroMetrosLineares');
+                const result = (dose * fator) / metros;
+                document.getElementById('insumoMetroResult').innerHTML = formatResult(result, 'g/metro');
+            });
+        });
+    </script>
+
+</body>
+</html>
