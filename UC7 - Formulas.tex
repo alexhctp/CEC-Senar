@@ -1,0 +1,114 @@
+\documentclass[a4paper, 12pt]{article}
+
+% Pacotes básicos para acentuação, matemática e layout
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{geometry}
+
+% Pacotes para tabelas aprimoradas
+\usepackage{longtable} % Para tabelas que podem quebrar entre páginas
+\usepackage{array}     % Para formatação avançada de colunas
+\usepackage{booktabs}  % Para linhas de tabela com visual profissional
+
+% Configuração da página com orientação paisagem
+\geometry{a3paper, margin=1in, landscape}
+
+\begin{document}
+
+% Título do documento
+\begin{center}
+    \huge\bfseries Folha de Fórmulas - Planejamento Empreendimento Cafeeiro - Prof. Esaú
+\end{center}
+
+\vspace{0.1cm}
+
+% Início da tabela longa
+% As colunas são definidas com larguras relativas ao tamanho do texto
+\begin{longtable}{@{}p{0.3\textwidth} p{0.3\textwidth} p{0.4\textwidth}@{}}
+
+% Cabeçalho da tabela, que se repete em novas páginas
+\toprule
+\textbf{A Fórmula} & \textbf{O Objetivo} & \textbf{Descrição dos Itens} \\
+\midrule
+\endhead
+
+% Rodapé da tabela
+\bottomrule
+\endfoot
+
+% --- Seção 1: Densidade de Plantio ---
+\multicolumn{3}{@{}l}{\textbf{Cálculo de Densidade de Plantio}} \\
+\cmidrule(r){1-3}
+$$ \text{Nº de Plantas} = \frac{\text{Área Total}}{(\text{Esp. Linhas} \times \text{Esp. Plantas})} $$ &
+Calcular o número total de plantas que cabem em uma determinada área. &
+\textbf{Nº de Plantas:} Quantidade total de plantas no talhão. \newline
+\textbf{Área Total:} Superfície total do terreno (em m²). \newline
+\textbf{Esp. Linhas:} Espaçamento entre as linhas de plantio (em m). \newline
+\textbf{Esp. Plantas:} Espaçamento entre as plantas na mesma linha (em m). \\
+\midrule
+
+% --- Seção 2: Metros Lineares ---
+\multicolumn{3}{@{}l}{\textbf{Cálculo de Metros Lineares}} \\
+\cmidrule(r){1-3}
+$$ \text{Metros Lineares} = \frac{\text{Área Total}}{\text{Espaçamento entre Linhas}} $$ &
+Calcular o comprimento total de todas as linhas de plantio. É a base para dimensionar a irrigação. &
+\textbf{Metros Lineares:} Comprimento total das fileiras (em m). \newline
+\textbf{Área Total:} Superfície total do terreno (em m²). \newline
+\textbf{Espaçamento entre Linhas:} Distância entre as fileiras (em m). \\
+\midrule
+
+% --- Seção 3: Fita de Gotejamento ---
+\multicolumn{3}{@{}l}{\textbf{Cálculo da Fita de Gotejamento}} \\
+\cmidrule(r){1-3}
+$$ \text{Comp. da Fita} = \text{Metros Lineares} \times \left(1 + \frac{\% \text{ Acréscimo}}{100}\right) $$ &
+Dimensionar a quantidade total de fita de gotejamento necessária, incluindo uma margem para perdas e manobras. &
+\textbf{Comp. da Fita:} Comprimento total da fita de gotejamento a ser comprada (em m). \newline
+\textbf{Metros Lineares:} Comprimento total das fileiras (em m). \newline
+\textbf{\% Acréscimo:} Percentual extra para perdas e conexões (geralmente 3\% a 5\%). \\
+\midrule
+
+% --- Seção 4: Emissores ---
+\multicolumn{3}{@{}l}{\textbf{Cálculo de Emissores (Gotejadores)}} \\
+\cmidrule(r){1-3}
+$$ \text{Nº de Emissores} = \frac{\text{Metros Lineares}}{\text{Espaçamento entre Emissores}} $$ &
+Determinar a quantidade total de pontos de gotejamento (emissores) em todo o sistema. &
+\textbf{Nº de Emissores:} Quantidade total de gotejadores. \newline
+\textbf{Metros Lineares:} Comprimento total das fileiras de plantio (em m). \newline
+\textbf{Espaçamento entre Emissores:} Distância entre os gotejadores na fita (em m). \\
+\midrule
+
+% --- Seção 5: Vazão Total ---
+\multicolumn{3}{@{}l}{\textbf{Cálculo de Vazão Total}} \\
+\cmidrule(r){1-3}
+$$ \text{Vazão Total} = \text{Nº de Emissores} \times \text{Vazão por Emissor} $$ &
+Calcular a demanda total de água do sistema de irrigação por hora, essencial para dimensionar a bomba. &
+\textbf{Vazão Total:} Volume total de água necessário por hora (em L/h). \newline
+\textbf{Nº de Emissores:} Quantidade total de gotejadores. \newline
+\textbf{Vazão por Emissor:} Vazão individual de cada gotejador (em L/h). \\
+\midrule
+
+% --- Seção 6: Insumos por Planta ---
+\multicolumn{3}{@{}l}{\textbf{Cálculo de Insumos por Planta}} \\
+\cmidrule(r){1-3}
+$$ \text{g/planta} = \frac{(\text{Dose Total} \times \text{Fator de Conversão})}{\text{Nº de Plantas}} $$ &
+Calcular a quantidade exata de insumo (fertilizante, corretivo) a ser aplicada em cada planta individualmente. &
+\textbf{g/planta:} Gramas do insumo a serem aplicadas por planta. \newline
+\textbf{Dose Total:} Quantidade total do insumo recomendada para a área (em Kg ou T). \newline
+\textbf{Fator de Conversão:} Usar \textbf{1.000} para converter Kg para g; \textbf{1.000.000} para converter T para g. \newline
+\textbf{Nº de Plantas:} Quantidade total de plantas na área. \\
+\midrule
+
+% --- Seção 7: Insumos por Metro Linear ---
+\multicolumn{3}{@{}l}{\textbf{Cálculo de Insumos por Metro Linear}} \\
+\cmidrule(r){1-3}
+$$ \text{g/metro} = \frac{(\text{Dose Total} \times \text{Fator de Conversão})}{\text{Metros Lineares}} $$ &
+Calcular a quantidade de insumo a ser aplicada por metro de linha de plantio, comum em fertirrigação ou aplicação em sulco. &
+\textbf{g/metro:} Gramas do insumo por metro linear. \newline
+\textbf{Dose Total:} Quantidade total do insumo (em Kg ou T). \newline
+\textbf{Fator de Conversão:} 1.000 para Kg; 1.000.000 para T. \newline
+\textbf{Metros Lineares:} Comprimento total das fileiras (em m). \\
+
+\end{longtable}
+
+\end{document}
